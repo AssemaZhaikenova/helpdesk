@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее о проблеме</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+        }
+    </style>
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var statusSelect = document.getElementById("status");
+            var actionsTextarea = document.getElementById("actions");
+            var savedStatus = statusSelect.getAttribute("data-saved-status");
+            var savedActions = actionsTextarea.getAttribute("data-saved-actions");
+            statusSelect.value = savedStatus;
+            actionsTextarea.value = savedActions;
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Подробнее о проблеме</h1>
+<form method="post" class="mt-4">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="status">Статус:</label>
+        <select name="status" id="status" class="form-control" data-saved-status="{{ problem.status }}">
+            <option value="new">Новый</option>
+            <option value="in_progress">В процессе</option>
+            <option value="resolved">Решено</option>
+            <option value="confirmed">Подтвержденный</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="actions">Действия:</label>
+        <textarea name="actions" id="actions" class="form-control" data-saved-actions="{{ problem.actions }}"></textarea>
+    </div>
+  <label for="assigned_user">Перенаправить:</label>
+  <select name="assigned_user" id="assigned_user">
+    {% for user in users %}
+      <option value="{{ user.id }}" {% if user.id == problem.assigned_user.id %}selected{% endif %}>{{ user.username }}</option>
+    {% endfor %}
+  </select>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+
+        <hr>
+
+        <p><strong>Имя:</strong> {{ problem.name }}</p>
+        <p><strong>Телефон:</strong> {{ problem.phone }}</p>
+        <p><strong>Email:</strong> {{ problem.email }}</p>
+        <p><strong>Описание:</strong> {{ problem.description }}</p>
+        <p><strong>Приоритет:</strong> {{ problem.get_priority_display }}</p>
+        <p><strong>Статус:</strong> {{ problem.status }}</p>
+        <p><strong>Действия:</strong> {{ problem.actions }}</p>
+        <p><strong>Время создания:</strong> {{ problem.created_at }}</p>
+        <a href="{% url 'problem-list' %}" class="btn btn-secondary">Назад</a>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

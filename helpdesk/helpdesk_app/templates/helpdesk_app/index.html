@@ -1,0 +1,17 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HelpDesk</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <p>Добро пожаловать в HelpDesk!</p>
+        <p>Чтобы авторизоваться, нажмите <a href="/login">сюда</a></p>
+        <p><a href="{% url 'create-problem' %}">Создать проблему</a></p>
+    </div>
+</body>
+</html>
